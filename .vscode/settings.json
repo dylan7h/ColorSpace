@@ -1,0 +1,9 @@
+{
+    "cmake.debugConfig": {
+        "MIMode": "lldb",
+        "args": [
+        ],
+        "miDebuggerPath": "C:/Program Files/LLVM/bin/lldb-vscode.exe"
+    },
+    
+}
