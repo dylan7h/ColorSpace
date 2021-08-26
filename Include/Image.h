@@ -23,6 +23,8 @@ typedef struct
     uint32_t    nStride;
     LPRGBQUAD_t pPalette;
     void*       pPixels;
-} IMG_INFO_t;
+} IMG_INFO_t, *LPIMG_INFO_t;
+
+void Image_ShowInformation( LPIMG_INFO_t pImageInstance );
 
 #endif  //!__IMAGE__H__

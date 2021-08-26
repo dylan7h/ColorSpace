@@ -18,6 +18,9 @@ void Workspace( int argc, char* argv[] )
     CTexture texture( &MainWindow );
     texture.CreateTexture( SDL_PIXELFORMAT_BGR24, bmp.Image.nWidth, bmp.Image.nHeight );
 
+    BMP_ShowInformation(&bmp);
+    Image_ShowInformation(&bmp.Image);
+
     while( bQuit == false )
     {
         while( SDL_PollEvent( &e ) != 0 )

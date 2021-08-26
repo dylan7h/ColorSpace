@@ -89,5 +89,22 @@ void BMP_ApplyPalette( LPBMP_t pDstBMPInstance, LPBMP_t pSrcBMPInstance )
 
 void BMP_ShowInformation( LPBMP_t pBMPInstance )
 {
+    printf( "[ BMP_FILE_t ]\n" );
+    printf( "    - bfType           : 0x%02X( %c%c )\n", pBMPInstance->File.bfType, pBMPInstance->File.bfType & 0xFF, pBMPInstance->File.bfType >> 8 );
+    printf( "    - bfRes1           : 0x%02X\n", pBMPInstance->File.bfReserved1 );
+    printf( "    - bfRes2           : 0x%02X\n", pBMPInstance->File.bfReserved2 );
+    printf( "    - bfOffBits        : %u\n\n", pBMPInstance->File.bfOffBits );
 
+    printf( "[ BMP_FILE_t ]\n" );
+    printf( "    - biSize           : %u\n", pBMPInstance->Info.biSize );
+    printf( "    - biWidth          : %u\n", pBMPInstance->Info.biWidth );
+    printf( "    - biHeight         : %u\n", pBMPInstance->Info.biHeight );
+    printf( "    - biPlanes         : %u\n", pBMPInstance->Info.biPlanes );
+    printf( "    - biBitCount       : %u\n", pBMPInstance->Info.biBitCount );
+    printf( "    - biCompression    : %u\n", pBMPInstance->Info.biCompression );
+    printf( "    - biSizeImage      : %u\n", pBMPInstance->Info.biSizeImage );
+    printf( "    - biXPerlsPerMeter : %u\n", pBMPInstance->Info.biXPerlsPerMeter );
+    printf( "    - biYPerlsPerMeter : %u\n", pBMPInstance->Info.biYPerlsPerMeter );
+    printf( "    - biClrUsed        : %u\n", pBMPInstance->Info.biClrUsed );
+    printf( "    - biClrImportant   : %u\n\n", pBMPInstance->Info.biClrImportant );
 }
