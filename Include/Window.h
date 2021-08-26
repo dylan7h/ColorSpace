@@ -3,7 +3,6 @@
 
 #include <SDL.h>
 #include <vector>
-
 class CWindow
 {
     private:

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <SDL_image.h>
 #include "Window.h"
 using namespace std;
 
@@ -17,6 +18,7 @@ CWindow::CWindow()
     this->bMouseFocus       = false;
 	this->bKeyboardFocus    = false;
 	this->bFullScreen       = false;
+    this->bMinimized        = false;
 	this->bShown            = false;
 	this->nWindowID         = -1;
 }
@@ -34,10 +36,14 @@ void CWindow::SDL_StartUp(void)
     {
         printf( "Warning: Linear texture filtering not enabled!" );
     }
+
+    int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;
+    assert( ( IMG_Init( imgFlags ) & imgFlags ) != 0 );
 }
 
 void CWindow::SDL_Release(void)
 {
+    IMG_Quit();
     SDL_Quit();
 }
 
@@ -179,8 +185,11 @@ void CWindow::ClearScreen(void)
     {
         CWindow* pInstance = *it;
 
-        SDL_SetRenderDrawColor( pInstance->pRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-        SDL_RenderClear( pInstance->pRenderer );
+        if( pInstance->bMinimized == false )
+        {
+            SDL_SetRenderDrawColor( pInstance->pRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+            SDL_RenderClear( pInstance->pRenderer );
+        }
     }
 
 }
@@ -193,7 +202,10 @@ void CWindow::RenderPresent(void)
     {
         CWindow* pInstance = *it;
 
-        SDL_RenderPresent( pInstance->pRenderer );
+        if( pInstance->bMinimized == false )
+        {
+            SDL_RenderPresent( pInstance->pRenderer );
+        }
     }
 }
 

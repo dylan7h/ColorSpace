@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "Texture.h"
 
 void Workspace( int argc, char* argv[] )
 {
@@ -6,8 +7,12 @@ void Workspace( int argc, char* argv[] )
     SDL_Event e;
     bool bQuit = false;
 
+
     MainWindow.Initialize( "Main Window", 640, 480 );
     SubWindow.Initialize( "Sub Window", 640, 480 );
+
+    CTexture png( &MainWindow );
+    png.LoadFromFile( "F:/00_workspace/ColorSpace/Images/Image_png.png" );
 
     while( bQuit == false )
     {
@@ -19,12 +24,14 @@ void Workspace( int argc, char* argv[] )
             }
 
             CWindow::UpdateWindowState( e );
-            CWindow::ClearScreen();
-
-
-            CWindow::RenderPresent();
         }
 
+        CWindow::ClearScreen();
+
+        png.Render(0, 0);
+
+        CWindow::RenderPresent();
+        
         bQuit = CWindow::IsAllWindowClosed();
     }
 }
