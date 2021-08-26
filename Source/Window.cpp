@@ -67,7 +67,9 @@ void CWindow::Initialize(const char lpszTitle[], int nWidth, int nHeight)
         CWindow::vecInstance.push_back( this );
 
         this->nWindowID = SDL_GetWindowID( this->pWindow );
-        this->bShown = true;
+        this->nWidth    = nWidth;
+        this->nHeight   = nHeight;
+        this->bShown    = true;
     }
 }
 

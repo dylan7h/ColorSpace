@@ -57,6 +57,16 @@ void CTexture::Release(void)
     }
 }
 
+void CTexture::GetScreenRect( SDL_Rect* prtScreen ) const
+{
+    assert( prtScreen != nullptr );
+
+    prtScreen->x = 0;
+    prtScreen->y = 0;
+    prtScreen->w = this->pWindowInstance->nWidth;
+    prtScreen->h = this->pWindowInstance->nHeight;
+}
+
 void CTexture::LoadFromFile( const char lpszPath[] )
 {
     SDL_Surface* pLoadedSurface;

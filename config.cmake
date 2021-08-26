@@ -35,5 +35,6 @@ list(APPEND SRC_LISTS "Source/Workspace.cpp")
 list(APPEND SRC_LISTS "Source/Window.cpp")
 list(APPEND SRC_LISTS "Source/Texture.cpp")
 list(APPEND SRC_LISTS "Source/Bitmap.cpp")
+list(APPEND SRC_LISTS "Source/Image.cpp")
 list(APPEND SRC_LISTS "Source/Conversion.cpp")
 

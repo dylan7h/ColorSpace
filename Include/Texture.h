@@ -22,6 +22,9 @@ class CTexture
         void Release(void);
 
     public:
+        void GetScreenRect( SDL_Rect* prtScreen ) const;
+
+    public:
         void LoadFromFile( const char lpszPath[] );
 };
 

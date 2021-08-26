@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "Texture.h"
+#include "Bitmap.h"
 
 void Workspace( int argc, char* argv[] )
 {
@@ -11,8 +12,11 @@ void Workspace( int argc, char* argv[] )
     MainWindow.Initialize( "Main Window", 640, 480 );
     SubWindow.Initialize( "Sub Window", 640, 480 );
 
-    CTexture png( &MainWindow );
-    png.LoadFromFile( "F:/00_workspace/ColorSpace/Images/Image_png.png" );
+    BMP_t bmp;
+    BMP_LoadFromFile( "F:/00_workspace/ColorSpace/Images/Image_24bit.bmp", &bmp );
+
+    CTexture texture( &MainWindow );
+    texture.CreateTexture( SDL_PIXELFORMAT_BGR24, bmp.Image.nWidth, bmp.Image.nHeight );
 
     while( bQuit == false )
     {
@@ -26,12 +30,22 @@ void Workspace( int argc, char* argv[] )
             CWindow::UpdateWindowState( e );
         }
 
+        /* Update Data */
+        {
+            texture.UpdateTextureData( bmp.Image.pPixels, bmp.Image.nStride );
+        }
+
         CWindow::ClearScreen();
 
-        png.Render(0, 0);
+        /* Render */
+        {
+            SDL_Rect rtScreen;
+
+            texture.GetScreenRect(&rtScreen);
+            texture.Render(0, 0, &rtScreen, 0.0, nullptr, SDL_FLIP_VERTICAL);
+        }
 
         CWindow::RenderPresent();
-        
         bQuit = CWindow::IsAllWindowClosed();
     }
 }
