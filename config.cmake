@@ -28,7 +28,9 @@ list(APPEND LIB_LISTS "SDL2main")
 # source lists
 # ============================================
 list(APPEND SRC_LISTS "Source/main.cpp")
-list(APPEND SRC_LISTS "Source/Core.cpp")
+list(APPEND SRC_LISTS "Source/Workspace.cpp")
+list(APPEND SRC_LISTS "Source/Window.cpp")
+list(APPEND SRC_LISTS "Source/Texture.cpp")
 list(APPEND SRC_LISTS "Source/Bitmap.cpp")
 list(APPEND SRC_LISTS "Source/Conversion.cpp")
 

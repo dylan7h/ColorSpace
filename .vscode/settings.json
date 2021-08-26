@@ -5,5 +5,8 @@
         ],
         "miDebuggerPath": "C:/Program Files/LLVM/bin/lldb-vscode.exe"
     },
+    "files.associations": {
+        "vector": "cpp"
+    },
     
 }
