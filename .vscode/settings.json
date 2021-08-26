@@ -2,7 +2,7 @@
     "cmake.debugConfig": {
         "MIMode": "lldb",
         "args": [
-            
+            "${workspaceFolder}/Images/Image_1bit.bmp"
         ],
         "miDebuggerPath": "C:/Program Files/LLVM/bin/lldb-vscode.exe"
     }

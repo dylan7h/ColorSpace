@@ -17,5 +17,7 @@ int main( int argc, char* argv[] )
 
     CWindow::SDL_Release();
 
+    FreeConsole();
+
     return 0;
 }

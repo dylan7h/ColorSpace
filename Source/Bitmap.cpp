@@ -5,6 +5,12 @@
 
 #define BIT2BYTE(VAL)   ( (VAL) / 8U )
 
+#define RESULTION_32BIT     ( 4U )
+#define RESULTION_24BIT     ( 3U )
+#define RESULTION_16BIT     ( 2U )
+#define RESULTION_8BIT      ( 1U )
+#define RESULTION_TARGET    RESULTION_24BIT
+
 void BMP_LoadFromFile( const char lpszPath[], LPBMP_t pBMPInstance )
 {
     FILE* fp;
@@ -84,7 +90,66 @@ void BMP_LoadFromFile( const char lpszPath[], LPBMP_t pBMPInstance )
 
 void BMP_ApplyPalette( LPBMP_t pDstBMPInstance, LPBMP_t pSrcBMPInstance )
 {
+    uint8_t* pDstPos;
+    uint8_t* pSrcPos;
+    uint32_t nPalettePos, nNumOfPixels;
 
+    assert( pSrcBMPInstance->Image.nPixelPerBit <= 8U );
+
+    pDstBMPInstance->File = pSrcBMPInstance->File;
+    pDstBMPInstance->Info = pSrcBMPInstance->Info;
+    pDstBMPInstance->Image = pSrcBMPInstance->Image;
+
+    nNumOfPixels = pSrcBMPInstance->Image.nSizeOfImage * ( 8U / pSrcBMPInstance->Image.nPixelPerBit );
+    pDstBMPInstance->Image.pPixels = malloc( RESULTION_TARGET * nNumOfPixels );
+    assert( pDstBMPInstance->Image.pPixels != nullptr );
+
+    pDstPos = (uint8_t*)pDstBMPInstance->Image.pPixels;
+    pSrcPos = (uint8_t*)pSrcBMPInstance->Image.pPixels;
+    for( uint32_t i = 0; i < nNumOfPixels; i++ )
+    {
+        switch ( pSrcBMPInstance->Image.nPixelPerBit )
+        {
+            case 1U:
+                nPalettePos = ( pSrcPos[ i / 8U ] >> ( i % 8U ) ) & 0x01U;
+            break;
+
+            case 2U:
+                nPalettePos = ( pSrcPos[ i / 4U ] >> ( ( i % 4U ) * 2U ) ) & 0x03U;
+            break;
+
+            case 4U:
+                nPalettePos = ( pSrcPos[ i / 2U ] >> ( ( i % 2U ) * 4U ) ) & 0x0FU;
+            break;
+
+            default:
+                nPalettePos = pSrcPos[ i ];
+            break;
+        }
+
+        pDstPos[ ( RESULTION_TARGET * i ) ]         = pSrcBMPInstance->Image.pPalette[ nPalettePos ].rgbR;
+        pDstPos[ ( RESULTION_TARGET * i ) + 1U ]    = pSrcBMPInstance->Image.pPalette[ nPalettePos ].rgbG;
+        pDstPos[ ( RESULTION_TARGET * i ) + 2U ]    = pSrcBMPInstance->Image.pPalette[ nPalettePos ].rgbB;
+    }
+
+    pDstBMPInstance->File.bfSize            = SIZE_OF_BMP_HEADER + ( RESULTION_TARGET * pSrcBMPInstance->Image.nSizeOfImage );
+    pDstBMPInstance->File.bfOffBits         = SIZE_OF_BMP_HEADER;
+
+    pDstBMPInstance->Info.biBitCount        = 24U;
+    pDstBMPInstance->Info.biSizeImage       = ( RESULTION_TARGET * pSrcBMPInstance->Image.nSizeOfImage );
+
+    pDstBMPInstance->Image.nPixelPerBit     = 24U;
+    pDstBMPInstance->Image.nAlign           = 4U;
+    pDstBMPInstance->Image.nNumOfPalette    = 0U;
+    pDstBMPInstance->Image.nSizeOfImage     = ( RESULTION_TARGET * pSrcBMPInstance->Image.nSizeOfImage );
+    pDstBMPInstance->Image.pPalette         = nullptr;
+    pDstBMPInstance->Image.nPadding         = pDstBMPInstance->Image.nAlign - ( pDstBMPInstance->Image.nWidth % pDstBMPInstance->Image.nAlign );
+    if( pDstBMPInstance->Image.nPadding == pDstBMPInstance->Image.nAlign )
+    {
+        pDstBMPInstance->Image.nPadding = 0U;
+    }
+
+    pDstBMPInstance->Image.nStride = BIT2BYTE( ( pDstBMPInstance->Image.nWidth + pDstBMPInstance->Image.nPadding ) * pDstBMPInstance->Image.nPixelPerBit );
 }
 
 void BMP_ShowInformation( LPBMP_t pBMPInstance )

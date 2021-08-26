@@ -15,10 +15,10 @@ typedef struct
 {
     uint32_t    nWidth;
     uint32_t    nHeight;
-    uint16_t    nPixelPerBit;
-    uint16_t    nAlign;
-    uint16_t    nNumOfPalette;
-    uint16_t    nPadding;
+    uint32_t    nPixelPerBit;
+    uint32_t    nAlign;
+    uint32_t    nNumOfPalette;
+    uint32_t    nPadding;
     uint32_t    nSizeOfImage;
     uint32_t    nStride;
     LPRGBQUAD_t pPalette;

@@ -4,22 +4,31 @@
 
 void Workspace( int argc, char* argv[] )
 {
-    CWindow MainWindow, SubWindow;
     SDL_Event e;
     bool bQuit = false;
 
+    BMP_t SrcBMP, DstBMP;
+    LPBMP_t lpDispBMP = &SrcBMP;
+    
+    BMP_LoadFromFile( argv[1], &SrcBMP );
+    BMP_ShowInformation(&SrcBMP);
+    Image_ShowInformation(&SrcBMP.Image);
+    
+    if( SrcBMP.Image.nPixelPerBit < 24 )
+    {
+        BMP_ApplyPalette( &DstBMP, &SrcBMP );
+        lpDispBMP = &DstBMP;
 
-    MainWindow.Initialize( "Main Window", 640, 480 );
-    SubWindow.Initialize( "Sub Window", 640, 480 );
+        BMP_ShowInformation(&DstBMP);
+        Image_ShowInformation(&DstBMP.Image);
+    }
 
-    BMP_t bmp;
-    BMP_LoadFromFile( "F:/00_workspace/ColorSpace/Images/Image_24bit.bmp", &bmp );
+    CWindow MainWindow;
+    MainWindow.Initialize( "Main Window", lpDispBMP->Image.nWidth, lpDispBMP->Image.nHeight );
 
     CTexture texture( &MainWindow );
-    texture.CreateTexture( SDL_PIXELFORMAT_BGR24, bmp.Image.nWidth, bmp.Image.nHeight );
+    texture.CreateTexture( SDL_PIXELFORMAT_BGR24, lpDispBMP->Image.nWidth, lpDispBMP->Image.nHeight );
 
-    BMP_ShowInformation(&bmp);
-    Image_ShowInformation(&bmp.Image);
 
     while( bQuit == false )
     {
@@ -35,7 +44,7 @@ void Workspace( int argc, char* argv[] )
 
         /* Update Data */
         {
-            texture.UpdateTextureData( bmp.Image.pPixels, bmp.Image.nStride );
+            texture.UpdateTextureData( lpDispBMP->Image.pPixels, lpDispBMP->Image.nStride );
         }
 
         CWindow::ClearScreen();
