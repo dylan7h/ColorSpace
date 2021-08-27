@@ -50,7 +50,7 @@ typedef struct
 {
     BMP_FILE_t File;
     BMP_INFO_t Info;
-    IMG_INFO_t Image;
+    RGB_INFO_t Image;
 } BMP_t, *LPBMP_t;
 
 void BMP_LoadFromFile( const char lpszPath[], LPBMP_t pBMPInstance );

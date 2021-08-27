@@ -23,8 +23,17 @@ typedef struct
     uint32_t    nStride;
     LPRGBQUAD_t pPalette;
     void*       pPixels;
-} IMG_INFO_t, *LPIMG_INFO_t;
+} RGB_INFO_t, *LPRGB_INFO_t;
 
-void Image_ShowInformation( LPIMG_INFO_t pImageInstance );
+typedef struct
+{
+    uint32_t nWidth;
+    uint32_t nHeight;
+    uint32_t nNumOfElement;
+    uint8_t* pYUV;
+} YUV_t, *LPYUV_t;
+
+void IMG_RGB_ShowInformation( LPRGB_INFO_t pImageInstance );
+void IMG_ConvertDomainRGBtoYUV444( LPRGB_INFO_t pRGBInstance, LPYUV_t pYUVInstance );
 
 #endif  //!__IMAGE__H__

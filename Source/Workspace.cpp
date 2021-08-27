@@ -12,7 +12,7 @@ void Workspace( int argc, char* argv[] )
     
     BMP_LoadFromFile( argv[1], &SrcBMP );
     BMP_ShowInformation(&SrcBMP);
-    Image_ShowInformation(&SrcBMP.Image);
+    IMG_RGB_ShowInformation(&SrcBMP.Image);
     
     if( SrcBMP.Image.nPixelPerBit < 24 )
     {
@@ -20,7 +20,7 @@ void Workspace( int argc, char* argv[] )
         lpDispBMP = &DstBMP;
 
         BMP_ShowInformation(&DstBMP);
-        Image_ShowInformation(&DstBMP.Image);
+        IMG_RGB_ShowInformation(&DstBMP.Image);
     }
 
     CWindow MainWindow;
@@ -29,6 +29,8 @@ void Workspace( int argc, char* argv[] )
     CTexture texture( &MainWindow );
     texture.CreateTexture( SDL_PIXELFORMAT_BGR24, lpDispBMP->Image.nWidth, lpDispBMP->Image.nHeight );
 
+    YUV_t YUVInstance;
+    IMG_ConvertDomainRGBtoYUV444( &lpDispBMP->Image, &YUVInstance );
 
     while( bQuit == false )
     {
@@ -54,7 +56,7 @@ void Workspace( int argc, char* argv[] )
             SDL_Rect rtScreen;
 
             texture.GetScreenRect(&rtScreen);
-            texture.Render(0, 0, &rtScreen, 0.0, nullptr, SDL_FLIP_VERTICAL);
+            texture.Render(0, 0, &rtScreen, 0.0, nullptr, SDL_FLIP_NONE);
         }
 
         CWindow::RenderPresent();

@@ -1,0 +1,72 @@
+ffmpeg -i Image_24bit.bmp -f rawvideo -pix_fmt yuv444p sample_yuv444p.yuv
+ffmpeg -i Image_24bit.bmp -f rawvideo -pix_fmt yuv440p sample_yuv440p.yuv
+ffmpeg -i Image_24bit.bmp -f rawvideo -pix_fmt yuv422p sample_yuv422p.yuv
+ffmpeg -i Image_24bit.bmp -f rawvideo -pix_fmt yuv420p sample_yuv420p.yuv
+ffmpeg -i Image_24bit.bmp -f rawvideo -pix_fmt yuv411p sample_yuv411p.yuv
+ffmpeg -i Image_24bit.bmp -f rawvideo -pix_fmt yuv410p sample_yuv410p.yuv
+
+
+Name                   Components   Bits/Pixel
+==============================================
+yuv420p                3            12
+yuv422p                3            16
+yuv444p                3            24
+yuv410p                3             9
+yuv411p                3            12
+yuvj420p               3            12
+yuvj422p               3            16
+yuvj444p               3            24
+yuv440p                3            16
+yuvj440p               3            16
+yuva420p               4            20
+yuv420p16le            3            24
+yuv420p16be            3            24
+yuv422p16le            3            32
+yuv422p16be            3            32
+yuv444p16le            3            48
+yuv444p16be            3            48
+yuv420p9be             3            13
+yuv420p9le             3            13
+yuv420p10be            3            15
+yuv420p10le            3            15
+yuv422p10be            3            20
+yuv422p10le            3            20
+yuv444p9be             3            27
+yuv444p9le             3            27
+yuv444p10be            3            30
+yuv444p10le            3            30
+yuv422p9be             3            18
+yuv422p9le             3            18
+yuva420p9be            4            22
+yuva420p9le            4            22
+yuva422p9be            4            27
+yuva422p9le            4            27
+yuva444p9be            4            36
+yuva444p9le            4            36
+yuva420p10be           4            25
+yuva420p10le           4            25
+yuva422p10be           4            30
+yuva422p10le           4            30
+yuva444p10be           4            40
+yuva444p10le           4            40
+yuva420p16be           4            40
+yuva420p16le           4            40
+yuva422p16be           4            48
+yuva422p16le           4            48
+yuva444p16be           4            64
+yuva444p16le           4            64
+yuva444p               4            32
+yuva422p               4            24
+yuv420p12be            3            18
+yuv420p12le            3            18
+yuv420p14be            3            21
+yuv420p14le            3            21
+yuv422p12be            3            24
+yuv422p12le            3            24
+yuv422p14be            3            28
+yuv422p14le            3            28
+yuv444p12be            3            36
+yuv444p12le            3            36
+yuv444p14be            3            42
+yuv444p14le            3            42
+yuvj411p               3            12

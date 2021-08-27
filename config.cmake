@@ -2,6 +2,8 @@
 # defines
 # ============================================
 list(APPEND DEF_LISTS "_CRT_SECURE_NO_WARNINGS")
+list(APPEND DEF_LISTS "IMG_DIR=\"${CMAKE_SOURCE_DIR}/Images\"")
+
 
 
 # ============================================
@@ -36,5 +38,4 @@ list(APPEND SRC_LISTS "Source/Window.cpp")
 list(APPEND SRC_LISTS "Source/Texture.cpp")
 list(APPEND SRC_LISTS "Source/Bitmap.cpp")
 list(APPEND SRC_LISTS "Source/Image.cpp")
-list(APPEND SRC_LISTS "Source/Conversion.cpp")
 

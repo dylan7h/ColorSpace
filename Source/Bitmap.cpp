@@ -15,6 +15,8 @@ void BMP_LoadFromFile( const char lpszPath[], LPBMP_t pBMPInstance )
 {
     FILE* fp;
     uint32_t SizeOfPalette, NumOfBlock;
+    volatile uint32_t i;
+    uint8_t* pPixelPos;
 
     assert( pBMPInstance != nullptr );
 
@@ -82,8 +84,17 @@ void BMP_LoadFromFile( const char lpszPath[], LPBMP_t pBMPInstance )
     pBMPInstance->Image.pPixels = malloc( pBMPInstance->Image.nSizeOfImage );
     assert( pBMPInstance->Image.pPixels != nullptr );
 
-    NumOfBlock = pBMPInstance->Image.nSizeOfImage / pBMPInstance->Image.nAlign;
-    assert( fread( pBMPInstance->Image.pPixels, pBMPInstance->Image.nAlign, NumOfBlock, fp ) == NumOfBlock );
+    pPixelPos = (uint8_t*)pBMPInstance->Image.pPixels + ( ( pBMPInstance->Image.nHeight - 1 ) * pBMPInstance->Image.nStride );
+    for( i = 0; i < pBMPInstance->Image.nHeight; i += 1 )
+    {
+        // (void)fseek( fp,  -1 * (long)pBMPInstance->Image.nStride, SEEK_CUR );
+        // (void)fseek( fp, (long)pBMPInstance->Image.nStride, SEEK_CUR );
+        (void)fread(pPixelPos, pBMPInstance->Image.nStride, 1, fp);
+        pPixelPos -= pBMPInstance->Image.nStride;
+    }
+
+    // NumOfBlock = pBMPInstance->Image.nSizeOfImage / pBMPInstance->Image.nAlign;
+    // assert( fread( pBMPInstance->Image.pPixels, 1U, pBMPInstance->Image.nSizeOfImage, fp ) == pBMPInstance->Image.nSizeOfImage );
 
     (void)fclose( fp );
 }
