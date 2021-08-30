@@ -30,7 +30,8 @@ void Workspace( int argc, char* argv[] )
     texture.CreateTexture( SDL_PIXELFORMAT_BGR24, lpDispBMP->Image.nWidth, lpDispBMP->Image.nHeight );
 
     YUV_t YUVInstance;
-    IMG_ConvertDomainRGBtoYUV444( &lpDispBMP->Image, &YUVInstance );
+    IMG_ConvertDomainRGBtoYUV( &lpDispBMP->Image, &YUVInstance );
+    IMG_ConvertYUVtoYUV444( &YUVInstance );
 
     while( bQuit == false )
     {

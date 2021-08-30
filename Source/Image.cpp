@@ -12,7 +12,7 @@
 #define YUV444_Y_POS            (0)
 #define YUV444_U_POS            (1)
 #define YUV444_V_POS            (2)
-#define YUV444_DELI             (4)
+#define YUV444_DELI             (3)
 
 #define CLIP(X)                 ( (X) > 255 ? 255 : (X) < 0 ? 0 : X)
 
@@ -53,12 +53,13 @@ void IMG_RGB_ShowInformation( LPRGB_INFO_t pImageInstance )
     printf( "    - nStride          : %u\n\n", pImageInstance->nStride );
 }
 
-void IMG_ConvertDomainRGBtoYUV444( LPRGB_INFO_t pRGBInstance, LPYUV_t pYUVInstance )
+void IMG_ConvertDomainRGBtoYUV( LPRGB_INFO_t pRGBInstance, LPYUV_t pYUVInstance )
 {
-    uint32_t i;
+    volatile uint32_t i;
+    volatile int32_t rgbR;
+    volatile int32_t rgbG;
+    volatile int32_t rgbB;
     uint8_t* pRGBPos;
-    uint8_t rgb[ RGB_DELI ];
-    volatile int32_t val;
 
     assert( pRGBInstance != nullptr );
     assert( pYUVInstance != nullptr );
@@ -67,31 +68,49 @@ void IMG_ConvertDomainRGBtoYUV444( LPRGB_INFO_t pRGBInstance, LPYUV_t pYUVInstan
     pYUVInstance->nHeight = pRGBInstance->nHeight;
     pYUVInstance->nNumOfElement = pYUVInstance->nWidth * pYUVInstance->nHeight;
 
-    pYUVInstance->pYUV = (uint8_t*)malloc( pYUVInstance->nNumOfElement * YUV444_DELI );
-    assert( pYUVInstance->pYUV != nullptr );
-    memset( pYUVInstance->pYUV, 0, pYUVInstance->nNumOfElement * YUV444_DELI );
+    pYUVInstance->pYBuffer = (uint8_t*)malloc( pYUVInstance->nNumOfElement );
+    pYUVInstance->pUBuffer = (uint8_t*)malloc( pYUVInstance->nNumOfElement );
+    pYUVInstance->pVBuffer = (uint8_t*)malloc( pYUVInstance->nNumOfElement );
+    assert( pYUVInstance->pYBuffer != nullptr );
+    assert( pYUVInstance->pUBuffer != nullptr );
+    assert( pYUVInstance->pVBuffer != nullptr );
 
     pRGBPos = (uint8_t*)pRGBInstance->pPixels;
     for( i = 0; i < pYUVInstance->nNumOfElement; i++ )
     {
-        rgb[ RGB_B_POS ] = pRGBPos[ ( i * RGB_DELI ) + RGB_B_POS ];
-        rgb[ RGB_G_POS ] = pRGBPos[ ( i * RGB_DELI ) + RGB_G_POS ];
-        rgb[ RGB_R_POS ] = pRGBPos[ ( i * RGB_DELI ) + RGB_R_POS ];
+        rgbB = pRGBPos[ ( i * RGB_DELI ) + RGB_B_POS ];
+        rgbG = pRGBPos[ ( i * RGB_DELI ) + RGB_G_POS ];
+        rgbR = pRGBPos[ ( i * RGB_DELI ) + RGB_R_POS ];
 
-#if 0
-        pYUVInstance->pYUV[ ( i * YUV444_DELI ) + YUV444_Y_POS ] = RGB2Y( rgb[ RGB_R_POS ], rgb[ RGB_G_POS ], rgb[ RGB_B_POS ] );
-        pYUVInstance->pYUV[ ( i * YUV444_DELI ) + YUV444_V_POS ] = RGB2V( rgb[ RGB_R_POS ], rgb[ RGB_G_POS ], rgb[ RGB_B_POS ] );
-        pYUVInstance->pYUV[ ( i * YUV444_DELI ) + YUV444_U_POS ] = RGB2U( rgb[ RGB_R_POS ], rgb[ RGB_G_POS ], rgb[ RGB_B_POS ] );
-#else
-        val = ( (  66 * rgb[ RGB_R_POS ] + 129 * rgb[ RGB_G_POS ] +  25 * rgb[ RGB_B_POS ] + 128) >> 8) +  16;
-        pYUVInstance->pYUV[ ( i * YUV444_DELI ) + YUV444_Y_POS ] = (uint8_t)val;
+        /* https://docs.microsoft.com/ko-kr/windows/win32/medfound/recommended-8-bit-yuv-formats-for-video-rendering?redirectedfrom=MSDN#YUV422formats16bitsperpixel */
+        pYUVInstance->pYBuffer[ i ] = (uint8_t)( (  66 * rgbR + 129 * rgbG +  25 * rgbB + 128) >> 8) +  16;
+        pYUVInstance->pUBuffer[ i ] = (uint8_t)( ( -38 * rgbR -  74 * rgbG + 112 * rgbB + 128) >> 8) + 128;
+        pYUVInstance->pVBuffer[ i ] = (uint8_t)( ( 112 * rgbR -  94 * rgbG -  18 * rgbB + 128) >> 8) + 128;
+    }
+}
 
-        val = ( ( -38 * rgb[ RGB_R_POS ] -  74 * rgb[ RGB_G_POS ] + 112 * rgb[ RGB_B_POS ] + 128) >> 8) + 128;
-        pYUVInstance->pYUV[ ( i * YUV444_DELI ) + YUV444_U_POS ] = (uint8_t)val;
+void IMG_ConvertYUVtoYUV444( LPYUV_t pYUVInstance )
+{
+    volatile uint32_t i;
+    uint8_t* pYUVPos;
 
-        val = ( ( 112 * rgb[ RGB_R_POS ] -  94 * rgb[ RGB_G_POS ] -  18 * rgb[ RGB_B_POS ] + 128) >> 8) + 128;
-        pYUVInstance->pYUV[ ( i * YUV444_DELI ) + YUV444_V_POS ] = (uint8_t)val;
-#endif
+    pYUVInstance->pYUV = (uint8_t*)malloc( pYUVInstance->nNumOfElement * YUV444_DELI );
+    assert( pYUVInstance->pYUV != nullptr );
+
+    pYUVPos = pYUVInstance->pYUV;
+    for( i = 0; i < pYUVInstance->nNumOfElement; i++ )
+    {
+        *pYUVPos++ = pYUVInstance->pYBuffer[ i ];
+    }
+
+    for( i = 0; i < pYUVInstance->nNumOfElement; i++ )
+    {
+        *pYUVPos++ = pYUVInstance->pUBuffer[ i ];
+    }
+
+    for( i = 0; i < pYUVInstance->nNumOfElement; i++ )
+    {
+        *pYUVPos++ = pYUVInstance->pVBuffer[ i ];
     }
 
     FILE* fp;
@@ -102,6 +121,32 @@ void IMG_ConvertDomainRGBtoYUV444( LPRGB_INFO_t pRGBInstance, LPYUV_t pYUVInstan
 
     fp = fopen(path, "wb");
     assert( fp != nullptr );
-    fwrite( pYUVInstance->pYUV, 1, pYUVInstance->nNumOfElement * YUV444_DELI, fp );
+    fwrite( pYUVInstance->pYUV, pYUVInstance->nNumOfElement, YUV444_DELI, fp );
     fclose( fp );
 }
+
+void IMG_ConvertYUVtoYUV422( LPYUV_t pYUVInstance )
+{
+
+}
+
+void IMG_ConvertYUVtoYUYV( LPYUV_t pYUVInstance )
+{
+
+}
+
+void IMG_ConvertYUVtoUYVY( LPYUV_t pYUVInstance )
+{
+
+}
+
+void IMG_ConvertYUVtoNV12( LPYUV_t pYUVInstance )
+{
+
+}
+
+void IMG_ConvertYUVtoNV21( LPYUV_t pYUVInstance )
+{
+
+}
+
