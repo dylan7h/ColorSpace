@@ -125,11 +125,6 @@ void IMG_ConvertYUVtoYUV444( LPYUV_t pYUVInstance )
     fclose( fp );
 }
 
-void IMG_ConvertYUVtoYUV422( LPYUV_t pYUVInstance )
-{
-
-}
-
 void IMG_ConvertYUVtoYUYV( LPYUV_t pYUVInstance )
 {
 

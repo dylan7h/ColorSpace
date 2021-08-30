@@ -38,11 +38,10 @@ typedef struct
 
 void IMG_RGB_ShowInformation( LPRGB_INFO_t pImageInstance );
 void IMG_ConvertDomainRGBtoYUV( LPRGB_INFO_t pRGBInstance, LPYUV_t pYUVInstance );
-void IMG_ConvertYUVtoYUV444( LPYUV_t pYUVInstance );
-void IMG_ConvertYUVtoYUV422( LPYUV_t pYUVInstance );
-void IMG_ConvertYUVtoYUYV( LPYUV_t pYUVInstance );
-void IMG_ConvertYUVtoUYVY( LPYUV_t pYUVInstance );
-void IMG_ConvertYUVtoNV12( LPYUV_t pYUVInstance );
-void IMG_ConvertYUVtoNV21( LPYUV_t pYUVInstance );
+void IMG_ConvertYUVtoYUV444( LPYUV_t pYUVInstance );    // Planar
+void IMG_ConvertYUVtoYUYV( LPYUV_t pYUVInstance );      // Packed - ( = YUV422, V422, YUNV, YUY2 )
+void IMG_ConvertYUVtoUYVY( LPYUV_t pYUVInstance );      // Packed - ( = YUV422, Y422, UYNV, HDYC )
+void IMG_ConvertYUVtoNV12( LPYUV_t pYUVInstance );      // Planar - ( = YUV420 )
+void IMG_ConvertYUVtoNV21( LPYUV_t pYUVInstance );      // Planar - ( = YUV420 )
 
 #endif  //!__IMAGE__H__
