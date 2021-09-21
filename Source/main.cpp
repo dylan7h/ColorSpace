@@ -1,3 +1,4 @@
+#ifdef  WIN32
 #include <Windows.h>
 #include "Window.h"
 
@@ -21,3 +22,19 @@ int main( int argc, char* argv[] )
 
     return 0;
 }
+#else
+#include "Window.h"
+
+extern void Workspace( int argc, char* argv[] );
+
+int main( int argc, char* argv[] )
+{
+    CWindow::SDL_StartUp();
+
+    Workspace( argc, argv );
+
+    CWindow::SDL_Release();
+
+    return 0;
+}
+#endif
