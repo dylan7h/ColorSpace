@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define SAFE_FREE(PTR)   do { free((PTR)); (PTR) = NULL; } while(0);
+
 typedef struct
 {
     uint8_t rgbR;

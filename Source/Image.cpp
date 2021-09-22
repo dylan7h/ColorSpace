@@ -127,21 +127,156 @@ void IMG_ConvertYUVtoYUV444( LPYUV_t pYUVInstance )
 
 void IMG_ConvertYUVtoYUYV( LPYUV_t pYUVInstance )
 {
+    volatile uint32_t i;
+    uint8_t* pYUVPos;
+    uint8_t* pYPos;
+    uint8_t* pUPos;
+    uint8_t* pVPos;
+    uint32_t SizeOfImage;
 
+    SizeOfImage = pYUVInstance->nNumOfElement + ( pYUVInstance->nNumOfElement / 2 ) + ( pYUVInstance->nNumOfElement / 2 );
+    pYUVInstance->pYUV = (uint8_t*)malloc( SizeOfImage );
+    assert( pYUVInstance->pYUV != nullptr );
+
+    pYUVPos = pYUVInstance->pYUV;
+    pYPos = pYUVInstance->pYBuffer;
+    pUPos = pYUVInstance->pUBuffer;
+    pVPos = pYUVInstance->pVBuffer;
+    for(i = 0; i < pYUVInstance->nNumOfElement / 2; i++ )
+    {
+        *pYUVPos++ = *pYPos++;
+        *pYUVPos++ = *pUPos++;  pUPos++;
+        *pYUVPos++ = *pYPos++;
+        *pYUVPos++ = *pVPos++;  pVPos++;
+    }
+
+    FILE* fp;
+    char path[ 255 ] = IMG_DIR;
+    strcat(path, "/IMG_YUYV.yuv");
+
+    printf( "%s\n", path );
+
+    fp = fopen(path, "wb");
+    assert( fp != nullptr );
+    fwrite( pYUVInstance->pYUV, 1, SizeOfImage, fp );
+    fclose( fp );
 }
 
 void IMG_ConvertYUVtoUYVY( LPYUV_t pYUVInstance )
 {
+    volatile uint32_t i;
+    uint8_t* pYUVPos;
+    uint8_t* pYPos;
+    uint8_t* pUPos;
+    uint8_t* pVPos;
+    uint32_t SizeOfImage;
 
+    SizeOfImage = pYUVInstance->nNumOfElement + ( pYUVInstance->nNumOfElement / 2 ) + ( pYUVInstance->nNumOfElement / 2 );
+    pYUVInstance->pYUV = (uint8_t*)malloc( SizeOfImage );
+    assert( pYUVInstance->pYUV != nullptr );
+
+    pYUVPos = pYUVInstance->pYUV;
+    pYPos = pYUVInstance->pYBuffer;
+    pUPos = pYUVInstance->pUBuffer;
+    pVPos = pYUVInstance->pVBuffer;
+    for(i = 0; i < pYUVInstance->nNumOfElement / 2; i++ )
+    {
+        *pYUVPos++ = *pUPos++;  pUPos++;
+        *pYUVPos++ = *pYPos++;
+        *pYUVPos++ = *pVPos++;  pVPos++;
+        *pYUVPos++ = *pYPos++;
+    }
+
+    FILE* fp;
+    char path[ 255 ] = IMG_DIR;
+    strcat(path, "/IMG_UYVY.yuv");
+
+    printf( "%s\n", path );
+
+    fp = fopen(path, "wb");
+    assert( fp != nullptr );
+    fwrite( pYUVInstance->pYUV, 1, SizeOfImage, fp );
+    fclose( fp );
 }
 
 void IMG_ConvertYUVtoNV12( LPYUV_t pYUVInstance )
 {
+    volatile uint32_t i;
+    uint8_t* pYUVPos;
+    uint8_t* pYPos;
+    uint8_t* pUPos;
+    uint8_t* pVPos;
+    uint32_t SizeOfImage;
 
+    SizeOfImage = pYUVInstance->nNumOfElement + ( pYUVInstance->nNumOfElement / 4 ) + ( pYUVInstance->nNumOfElement / 4 );
+    pYUVInstance->pYUV = (uint8_t*)malloc( SizeOfImage );
+    assert( pYUVInstance->pYUV != nullptr );
+
+    pYUVPos = pYUVInstance->pYUV;
+    pYPos = pYUVInstance->pYBuffer;
+    pUPos = pYUVInstance->pUBuffer;
+    pVPos = pYUVInstance->pVBuffer;
+    for(i = 0; i < pYUVInstance->nNumOfElement; i++ )
+    {
+        *pYUVPos++ = *pYPos++;
+    }
+
+    for(i = 0; i < pYUVInstance->nNumOfElement / 4; i++ )
+    {
+        *pYUVPos++ = *pUPos++;  pUPos++;
+        *pYUVPos++ = *pVPos++;  pVPos++;
+    }
+    
+
+    FILE* fp;
+    char path[ 255 ] = IMG_DIR;
+    strcat(path, "/IMG_NV12.yuv");
+
+    printf( "%s\n", path );
+
+    fp = fopen(path, "wb");
+    assert( fp != nullptr );
+    fwrite( pYUVInstance->pYUV, 1, SizeOfImage, fp );
+    fclose( fp );
 }
 
 void IMG_ConvertYUVtoNV21( LPYUV_t pYUVInstance )
 {
+    volatile uint32_t i;
+    uint8_t* pYUVPos;
+    uint8_t* pYPos;
+    uint8_t* pUPos;
+    uint8_t* pVPos;
+    uint32_t SizeOfImage;
 
+    SizeOfImage = pYUVInstance->nNumOfElement + ( pYUVInstance->nNumOfElement / 4 ) + ( pYUVInstance->nNumOfElement / 4 );
+    pYUVInstance->pYUV = (uint8_t*)malloc( SizeOfImage );
+    assert( pYUVInstance->pYUV != nullptr );
+
+    pYUVPos = pYUVInstance->pYUV;
+    pYPos = pYUVInstance->pYBuffer;
+    pUPos = pYUVInstance->pUBuffer;
+    pVPos = pYUVInstance->pVBuffer;
+    for(i = 0; i < pYUVInstance->nNumOfElement; i++ )
+    {
+        *pYUVPos++ = *pYPos++;
+    }
+
+    for(i = 0; i < pYUVInstance->nNumOfElement / 4; i++ )
+    {
+        *pYUVPos++ = *pVPos++;  pVPos++;
+        *pYUVPos++ = *pUPos++;  pUPos++;
+    }
+
+    FILE* fp;
+    char path[ 255 ] = IMG_DIR;
+    strcat(path, "/IMG_NV21.yuv");
+
+    printf( "%s\n", path );
+
+    fp = fopen(path, "wb");
+    assert( fp != nullptr );
+    fwrite( pYUVInstance->pYUV, 1, SizeOfImage, fp );
+    fclose( fp );
 }
 

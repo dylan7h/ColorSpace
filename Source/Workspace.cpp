@@ -31,7 +31,21 @@ void Workspace( int argc, char* argv[] )
 
     YUV_t YUVInstance;
     IMG_ConvertDomainRGBtoYUV( &lpDispBMP->Image, &YUVInstance );
+
     IMG_ConvertYUVtoYUV444( &YUVInstance );
+    SAFE_FREE(YUVInstance.pYUV);
+
+    IMG_ConvertYUVtoYUYV( &YUVInstance );
+    SAFE_FREE(YUVInstance.pYUV);
+
+    IMG_ConvertYUVtoUYVY( &YUVInstance );
+    SAFE_FREE(YUVInstance.pYUV);
+
+    IMG_ConvertYUVtoNV12( &YUVInstance );
+    SAFE_FREE(YUVInstance.pYUV);
+
+    IMG_ConvertYUVtoNV21( &YUVInstance );
+    SAFE_FREE(YUVInstance.pYUV);
 
     while( bQuit == false )
     {
