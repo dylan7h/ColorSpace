@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "Texture.h"
 #include "Bitmap.h"
+#include "PNG.h"
 
 void Workspace( int argc, char* argv[] )
 {
@@ -46,6 +47,9 @@ void Workspace( int argc, char* argv[] )
 
     IMG_ConvertYUVtoNV21( &YUVInstance );
     SAFE_FREE(YUVInstance.pYUV);
+
+    PNG_t pngInstance;
+    PNG_Load( argv[2], &pngInstance );
 
     while( bQuit == false )
     {

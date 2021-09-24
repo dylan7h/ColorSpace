@@ -2,7 +2,8 @@
     "cmake.debugConfig": {
         "MIMode": "gdb",
         "args": [
-            "${workspaceFolder}/Images/Image_24bit.bmp"
+            "${workspaceFolder}/Images/Image_24bit.bmp",
+            "${workspaceFolder}/Images/Image_png.png"
         ],
     },
     "files.associations": {
