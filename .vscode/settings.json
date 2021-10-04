@@ -5,6 +5,7 @@
             "${workspaceFolder}/Images/Image_24bit.bmp",
             "${workspaceFolder}/Images/Image_png.png"
         ],
+        "externalConsole": true
     },
     "files.associations": {
         "cmath": "cpp",

@@ -1,10 +1,17 @@
-#ifndef __IMAGE__H__
-#define __IMAGE__H__
+#ifndef __PIXEL_H__
+#define __PIXEL_H__
 
 #include <stdint.h>
-#include "Bitmap.h"
+#include <stdbool.h>
+
+#ifndef MAKEFOURCC
+#   define MAKEFOURCC(ch0, ch1, ch2, ch3)                                               \
+                ((uint32_t)(uint8_t)(ch0) | ((uint32_t)(uint8_t)(ch1) << 8) |           \
+                ((uint32_t)(uint8_t)(ch2) << 16) | ((uint32_t)(uint8_t)(ch3) << 24 ))
+#endif /* defined(MAKEFOURCC) */
 
 #define SAFE_FREE(PTR)   do { free((PTR)); (PTR) = NULL; } while(0);
+
 
 /* 
                             line stride
@@ -29,24 +36,22 @@
                                              pixel padding
  */
 
-typedef struct tagIMG
+typedef struct tagPACKED_IMG
 {
-    uint32_t                nWidth;
-    uint32_t                nHeight;
+    uint32_t    nWidth;
+    uint32_t    nHeight;
 
-    uint32_t                nPixelDepth;    /* 8, 16, 24, 32 bit */
-    uint32_t                nPixelPadding;
-    uint32_t                nPixelStride;   
+    uint32_t    nPixelDepth;    /* 8, 16, 24, 32 bit */
+    uint32_t    nPixelPadding;
+    uint32_t    nPixelStride;   
 
-    uint32_t                nLinePadding;
-    uint32_t                nLineStride;    /* x4 */
+    uint32_t    nLinePadding;
+    uint32_t    nLineStride;    /* x4 */
 
-    char                    lpszFormat[10];
+    uint32_t    nFourCC;
 
-    void*                   pBuffer;
-} IMG_t, *LPIMG_t;
+    void*       pBuffer;
+} RGB_IMG_t, *LPRGB_IMG_t;
 
-void IMG_SetFormatOfBitmap(LPBITMAP_t lpBMP, LPIMG_t lpIMG);
-bool IMG_ConvertBMP2IMG(LPBITMAP_t lpBMP, LPIMG_t lpIMG);
 
-#endif  //!__IMAGE__H__
+#endif // !__PIXEL_H__
