@@ -43,10 +43,13 @@ typedef struct tagIMG
 
     char                    lpszFormat[10];
 
-    void*                   pBuffer;
+    uint8_t*                pPaletteData;
+    uint32_t                nPaletteSize;
+
+    uint8_t*                pPixelData;
+    uint32_t                nImageSize;
 } IMG_t, *LPIMG_t;
 
-void IMG_SetFormatOfBitmap(LPBITMAP_t lpBMP, LPIMG_t lpIMG);
-bool IMG_ConvertBMP2IMG(LPBITMAP_t lpBMP, LPIMG_t lpIMG);
+bool IMG_ConvertFromBitmap(LPBITMAP_t lpBMP, LPIMG_t lpIMG);
 
 #endif  //!__IMAGE__H__

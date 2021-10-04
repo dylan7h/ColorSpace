@@ -16,7 +16,8 @@ void Workspace( int argc, char* argv[] )
 
     
 
-    BMP_LoadFromFile("/home/dylan/workspace/00_github/ColorSpace/Images/Image_RGB888.bmp", &BMP_RGB888);
+    BMP_LoadFromFile("/home/dylan/workspace/00_github/ColorSpace/Images/Image_24bit.bmp", &BMP_RGB888);
+    // BMP_LoadFromFile("/home/dylan/workspace/00_github/ColorSpace/Images/Image_RGB888.bmp", &BMP_RGB888);
     BMP_LoadFromFile("/home/dylan/workspace/00_github/ColorSpace/Images/Image_RGBA.bmp", &BMP_RGBA);
     BMP_LoadFromFile("/home/dylan/workspace/00_github/ColorSpace/Images/Image_RGBX.bmp", &BMP_RGBX);
     BMP_LoadFromFile("/home/dylan/workspace/00_github/ColorSpace/Images/RGB565.bmp", &BMP_RGB565);
@@ -24,34 +25,30 @@ void Workspace( int argc, char* argv[] )
     BMP_LoadFromFile("/home/dylan/workspace/00_github/ColorSpace/Images/XRGB1555.bmp", &BMP_XRGB1555);
 
     printf(">> BMP_RGB888\n");
-    IMG_SetFormatOfBitmap(&BMP_RGB888, &IMG_RGB888);
     BMP_ShowInfo(&BMP_RGB888);
 
     printf(">> BMP_RGBA\n");
-    IMG_SetFormatOfBitmap(&BMP_RGBA, &IMG_RGBA);
     BMP_ShowInfo(&BMP_RGBA);
 
     printf(">> BMP_RGBX\n");
-    IMG_SetFormatOfBitmap(&BMP_RGBX, &IMG_RGBX);
     BMP_ShowInfo(&BMP_RGBX);
 
     printf(">> BMP_RGB565\n");
-    IMG_SetFormatOfBitmap(&BMP_RGB565, &IMG_RGB565);
     BMP_ShowInfo(&BMP_RGB565);
 
     printf(">> BMP_ARGB1555\n");
-    IMG_SetFormatOfBitmap(&BMP_ARGB1555, &IMG_ARGB1555);
     BMP_ShowInfo(&BMP_ARGB1555);
 
     printf(">> BMP_XRGB1555\n");
-    IMG_SetFormatOfBitmap(&BMP_XRGB1555, &IMG_XRGB1555);
     BMP_ShowInfo(&BMP_XRGB1555);
 
+    IMG_ConvertFromBitmap(&BMP_RGB888, &IMG_RGB888);
+
     CWindow MainWindow;
-    // MainWindow.Initialize( "Main Window", lpDispBMP->Image.nWidth, lpDispBMP->Image.nHeight );
+    MainWindow.Initialize( "Main Window", IMG_RGB888.nWidth, IMG_RGB888.nHeight );
 
     CTexture texture( &MainWindow );
-    // texture.CreateTexture( SDL_PIXELFORMAT_BGR24, lpDispBMP->Image.nWidth, lpDispBMP->Image.nHeight );
+    texture.CreateTexture( SDL_PIXELFORMAT_BGR24, IMG_RGB888.nWidth, IMG_RGB888.nHeight );
 
 
     while( bQuit == false )
@@ -68,7 +65,7 @@ void Workspace( int argc, char* argv[] )
 
         /* Update Data */
         {
-            // texture.UpdateTextureData( lpDispBMP->Image.pPixels, lpDispBMP->Image.nStride );
+            texture.UpdateTextureData( IMG_RGB888.pPixelData, IMG_RGB888.nLineStride );
         }
 
         CWindow::ClearScreen();
