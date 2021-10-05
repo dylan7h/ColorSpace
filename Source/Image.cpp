@@ -59,6 +59,158 @@ bool IMG_ConvertFromBitmap(LPBITMAP_t lpBMP, LPIMG_t lpIMG)
     return false;
 }
 
+SDL_PixelFormatEnum IMG_GetPixelFormatOfSDL(LPIMG_t lpIMG)
+{
+    SDL_PixelFormatEnum ePixelFormat = SDL_PIXELFORMAT_UNKNOWN;
+
+    if(strcmp(lpIMG->lpszFormat, "RGB332") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_RGB332;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "RGB444") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_RGB444;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "RGB555") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_RGB555;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "BGR555") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_BGR555;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "ARGB4444") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_ARGB4444;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "RGBA4444") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_RGBA4444;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "ABGR4444") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_ABGR4444;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "BGRA4444") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_BGRA4444;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "ARGB1555") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_ARGB1555;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "RGBA5551") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_RGBA5551;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "ABGR1555") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_ABGR1555;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "BGRA5551") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_BGRA5551;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "RGB565") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_RGB565;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "BGR565") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_BGR565;
+        goto EXIT_FUNCTION;
+    }
+
+    if((strcmp(lpIMG->lpszFormat, "RGB888") == 0) || (strcmp(lpIMG->lpszFormat, "RGB24") == 0))
+    {
+        ePixelFormat = SDL_PIXELFORMAT_RGB24;
+        goto EXIT_FUNCTION;
+    }
+
+    if((strcmp(lpIMG->lpszFormat, "BGR888") == 0) || (strcmp(lpIMG->lpszFormat, "BGR24") == 0))
+    {
+        ePixelFormat = SDL_PIXELFORMAT_BGR24;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "XRGB8888") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_RGB888;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "RGBX8888") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_RGBX8888;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "XBGR8888") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_BGR888;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "BGRX8888") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_BGRX8888;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "ARGB8888") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_ARGB8888;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "RGBA8888") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_RGBA8888;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "ABGR8888") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_ABGR8888;
+        goto EXIT_FUNCTION;
+    }
+
+    if(strcmp(lpIMG->lpszFormat, "BGRA8888") == 0)
+    {
+        ePixelFormat = SDL_PIXELFORMAT_BGRA8888;
+        goto EXIT_FUNCTION;
+    }
+
+EXIT_FUNCTION:
+    return ePixelFormat;
+}
+
 static uint8_t IMG_GetCountOfMaskBits(uint32_t val)
 {
     uint32_t ret = 0;

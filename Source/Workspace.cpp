@@ -42,13 +42,17 @@ void Workspace( int argc, char* argv[] )
     printf(">> BMP_XRGB1555\n");
     BMP_ShowInfo(&BMP_XRGB1555);
 
-    IMG_ConvertFromBitmap(&BMP_RGB888, &IMG_RGB888);
+    LPBITMAP_t pBMP = &BMP_RGB888;
+    IMG_t refIMG;
+
+    IMG_ConvertFromBitmap(pBMP, &refIMG);
 
     CWindow MainWindow;
-    MainWindow.Initialize( "Main Window", IMG_RGB888.nWidth, IMG_RGB888.nHeight );
+    MainWindow.Initialize( "Main Window", refIMG.nWidth, refIMG.nHeight );
 
     CTexture texture( &MainWindow );
-    texture.CreateTexture( SDL_PIXELFORMAT_BGR24, IMG_RGB888.nWidth, IMG_RGB888.nHeight );
+    texture.CreateTexture( IMG_GetPixelFormatOfSDL(&refIMG), refIMG.nWidth, refIMG.nHeight );
+    // texture.CreateTexture( SDL_PIXELFORMAT_BGR24, refIMG.nWidth, refIMG.nHeight );
 
 
     while( bQuit == false )
@@ -65,7 +69,7 @@ void Workspace( int argc, char* argv[] )
 
         /* Update Data */
         {
-            texture.UpdateTextureData( IMG_RGB888.pPixelData, IMG_RGB888.nLineStride );
+            texture.UpdateTextureData( refIMG.pPixelData, refIMG.nLineStride );
         }
 
         CWindow::ClearScreen();

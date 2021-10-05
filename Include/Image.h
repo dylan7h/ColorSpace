@@ -2,6 +2,7 @@
 #define __IMAGE__H__
 
 #include <stdint.h>
+
 #include "Bitmap.h"
 
 #define SAFE_FREE(PTR)   do { free((PTR)); (PTR) = NULL; } while(0);
@@ -51,5 +52,8 @@ typedef struct tagIMG
 } IMG_t, *LPIMG_t;
 
 bool IMG_ConvertFromBitmap(LPBITMAP_t lpBMP, LPIMG_t lpIMG);
+
+#include <SDL.h>
+SDL_PixelFormatEnum IMG_GetPixelFormatOfSDL(LPIMG_t lpIMG);
 
 #endif  //!__IMAGE__H__
